@@ -1,6 +1,7 @@
 #pragma once
 
 #include <float.h>
+
 typedef struct {
   double min;
   double max;

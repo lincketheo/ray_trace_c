@@ -7,6 +7,8 @@
 
 #define MAX_SPHERES 1000
 
+// Might want to union + enum objs to add abstraction
+
 typedef struct {
   sphere spheres[MAX_SPHERES];
   size_t slen;
@@ -14,7 +16,7 @@ typedef struct {
 
 obj_collection objc_create();
 
-hit_result objc_hit(const obj_collection *s, const ray *r,
-                    const interval tslice);
+hit_result objc_hit(const obj_collection* s, const ray* r,
+    const interval tslice);
 
-int objc_add_sphere(obj_collection *w, const sphere s);
+int objc_add_sphere(obj_collection* w, const sphere s);
