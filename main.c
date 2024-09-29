@@ -10,51 +10,32 @@
 #include "vec3.h"
 #include "world.h"
 
-
 int main() {
   obj_collection objs = objc_create();
 
-  for(int a = -11; a < 11; ++a) {
-    for(int b = -11; b < 11; ++b) {
+  for (int a = -11; a < 11; ++a) {
+    for (int b = -11; b < 11; ++b) {
       double choose_mat = randd();
       v3 center = v3c(a + 0.9 * randd(), 0.2, b + 0.9 * randd());
 
-      if(v3n2s(v3s(center, v3c(5, 0.2, 0))) > 0.9) {
-        if(choose_mat < 0.8) {
+      if (v3n2s(v3s(center, v3c(5, 0.2, 0))) > 0.9) {
+        if (choose_mat < 0.8) {
           v3 albedo = v3hp(v3randd(), v3randd());
-          material mat = (material) {
-            .t = LAMB,
-            .l = (lambertian) {
-              .albedo = albedo
-            }
-          };
-          objc_add_sphere(&objs, (sphere){
-            .center = center,
-            .radius = 0.2,
-            .mat = mat 
-          });
-        } else if(choose_mat < 0.95) {
+          material mat =
+              (material){.t = LAMB, .l = (lambertian){.albedo = albedo}};
+          objc_add_sphere(
+              &objs, (sphere){.center = center, .radius = 0.2, .mat = mat});
+        } else if (choose_mat < 0.95) {
           v3 albedo = v3randdr(0.5, 1);
           double fuzz = randdr(0, 0.5);
-          material mat = (material) {
-            .t = METAL,
-            .m = (metal) {
-              .albedo = albedo,
-              .fuzz = fuzz 
-            }
-          };
-          objc_add_sphere(&objs, (sphere){
-            .center = center,
-            .radius = 0.2,
-            .mat = mat 
-          });
+          material mat = (material){
+              .t = METAL, .m = (metal){.albedo = albedo, .fuzz = fuzz}};
+          objc_add_sphere(
+              &objs, (sphere){.center = center, .radius = 0.2, .mat = mat});
         } else {
           material mat = mat_dielecc(1.5);
-          objc_add_sphere(&objs, (sphere){
-            .center = center,
-            .radius = 0.2,
-            .mat = mat 
-          });
+          objc_add_sphere(
+              &objs, (sphere){.center = center, .radius = 0.2, .mat = mat});
         }
       }
     }
@@ -68,7 +49,6 @@ int main() {
 
   material material3 = mat_metalc(0.7, 0.6, 0.5, 0.0);
   objc_add_sphere(&objs, sc(4, 1, 0, 1.0, material3));
-
 
   world w = world_create_default();
   w.ar = 16.0 / 9.0;
@@ -88,8 +68,6 @@ int main() {
 
   return 0;
 }
-
-
 
 /**
 int main() {

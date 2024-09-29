@@ -104,15 +104,14 @@ static inline v3 v3refract(const v3 uv, const v3 n, double etai_over_etat) {
 }
 
 static inline v3 v3cr(const v3 u, const v3 v) {
-  return v3c(u.y * v.z - u.z * v.y, 
-             u.z * v.x - u.x * v.z,
+  return v3c(u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z,
              u.x * v.y - u.y * v.x);
 }
 
 static inline v3 v3rand_unit_disk() {
-  while(1) {
+  while (1) {
     v3 p = v3c(randdr(-1, 1), randdr(-1, 1), 0);
-    if(v3n2ss(p) < 1)
+    if (v3n2ss(p) < 1)
       return p;
   }
 }

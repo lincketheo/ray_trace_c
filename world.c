@@ -15,18 +15,16 @@ static inline v3 view_port_upper_left(v3 camera_center, v3 viewport_u,
 }
 
 world world_create_default() {
-  return (world){
-      .ar = 1.0,
-      .pxw = 100,
-      .samples_per_pixel = 10,
-      .max_depth = 10,
-      .vfov = 90,
-      .lookfrom = v3c(0, 0, 0),
-      .lookat = v3c(0, 0, -1),
-      .vup = v3c(0, 1, 0),
-      .defocus_angle = 0,
-      .focus_dist = 10
-  };
+  return (world){.ar = 1.0,
+                 .pxw = 100,
+                 .samples_per_pixel = 10,
+                 .max_depth = 10,
+                 .vfov = 90,
+                 .lookfrom = v3c(0, 0, 0),
+                 .lookat = v3c(0, 0, -1),
+                 .vup = v3c(0, 1, 0),
+                 .defocus_angle = 0,
+                 .focus_dist = 10};
 }
 
 void world_initialize(world *w) {
@@ -36,7 +34,7 @@ void world_initialize(world *w) {
   w->center = w->lookfrom;
 
   // Dist between look from and look at
-  //double focal_length = v3n2s(v3s(w->lookfrom, w->lookat)); 
+  // double focal_length = v3n2s(v3s(w->lookfrom, w->lookat));
   double theta = w->vfov * M_PI / 180;
   double vph = 2 * tan(theta / 2) * w->focus_dist;
   double vpw = vph * (double)w->pxw / w->pxh;
@@ -45,7 +43,7 @@ void world_initialize(world *w) {
   w->u = v3n2v(v3cr(w->vup, w->w));
   w->v = v3cr(w->w, w->u);
 
-  v3 viewport_u = v3sm(w->u, vpw); 
+  v3 viewport_u = v3sm(w->u, vpw);
   v3 viewport_v = v3sm(w->v, -vph);
 
   w->pixel_delta_u = v3sm(viewport_u, 1.0 / w->pxw);
@@ -55,9 +53,11 @@ void world_initialize(world *w) {
   vpul = v3s(vpul, v3sm(viewport_u, 0.5));
   vpul = v3s(vpul, v3sm(viewport_v, 0.5));
 
-  w->pixel00_loc = v3a(vpul, v3sm(v3a(w->pixel_delta_u, w->pixel_delta_v), 0.5));
+  w->pixel00_loc =
+      v3a(vpul, v3sm(v3a(w->pixel_delta_u, w->pixel_delta_v), 0.5));
 
-  double defocus_radius = w->focus_dist * tan((w->defocus_angle / 2) * M_PI / 180);
+  double defocus_radius =
+      w->focus_dist * tan((w->defocus_angle / 2) * M_PI / 180);
   w->defocus_disk_u = v3sm(w->u, defocus_radius);
   w->defocus_disk_v = v3sm(w->v, defocus_radius);
 }
@@ -68,7 +68,7 @@ v3 world_calculate_pixel_center(world *w, size_t row, size_t col) {
              v3a(v3sm(w->pixel_delta_u, row), v3sm(w->pixel_delta_v, col)));
 }
 
-v3 world_calculate_defocus_disk_sample(world* w) {
+v3 world_calculate_defocus_disk_sample(world *w) {
   v3 p = v3rand_unit_disk();
   v3 ret = v3a(w->center, v3sm(w->defocus_disk_u, p.x));
   ret = v3a(ret, v3sm(w->defocus_disk_v, p.y));
@@ -85,9 +85,9 @@ ray world_calculate_ray_to_pixel(world *w, size_t row, size_t col) {
   v3 dir = v3a(pxactual, v3sm(w->center, -1));
 
   v3 origin;
-  if(w->defocus_angle <= 0) 
+  if (w->defocus_angle <= 0)
     origin = w->center;
-  else 
+  else
     origin = world_calculate_defocus_disk_sample(w);
 
   return (ray){.origin = origin, .direction = dir};
