@@ -4,6 +4,7 @@
 #include "vec3.h"
 
 typedef struct {
+  // Parameters you can change
   double ar;
   int pxw;
   int samples_per_pixel;
@@ -17,7 +18,7 @@ typedef struct {
   double defocus_angle;
   double focus_dist;
 
-  // Derived
+  // Parameters you shouldn't change (Derived)
   int pxh;
   v3 center;
   v3 pixel00_loc;
@@ -26,9 +27,11 @@ typedef struct {
   v3 u, v, w;
   v3 defocus_disk_u;
   v3 defocus_disk_v;
-} world;
+} camera;
 
-// Generates default values
-world world_create_default();
+// Generates default values - you can change values, then camera_render_ppm will 
+// set everything correctly
+camera camera_create_default();
 
-void world_render_ppm(world *w, obj_collection *objs);
+// Render a camera and print to stdout in ppm format
+void camera_render_ppm(camera *w, obj_collection *objs);
