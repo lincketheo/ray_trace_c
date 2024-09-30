@@ -24,7 +24,8 @@ world world_create_default() {
                  .lookat = v3c(0, 0, -1),
                  .vup = v3c(0, 1, 0),
                  .defocus_angle = 0,
-                 .focus_dist = 10};
+                 .focus_dist = 10
+  };
 }
 
 void world_initialize(world *w) {
@@ -75,20 +76,23 @@ v3 world_calculate_defocus_disk_sample(world *w) {
   return ret;
 }
 
+v3 sample_square() {
+  return v3c(randd() - 0.5, randd() - 0.5, 0);
+}
+
 ray world_calculate_ray_to_pixel(world *w, size_t row, size_t col) {
-  v3 pxcenter = world_calculate_pixel_center(w, row, col);
 
-  // Add random(-1/2, 1/2) * u + random(-1/2, 1/2) * v
-  v3 pxactual = v3a(pxcenter, v3sm(w->pixel_delta_v, randd(-0.5, 0.5)));
-  pxactual = v3a(pxactual, v3sm(w->pixel_delta_u, randd(-0.5, 0.5)));
-
-  v3 dir = v3a(pxactual, v3sm(w->center, -1));
+  v3 offset = sample_square();
+  v3 pixel_sample = v3a(w->pixel00_loc, v3sm(w->pixel_delta_u, row + offset.x));
+  pixel_sample = v3a(pixel_sample, v3sm(w->pixel_delta_v, col + offset.y));
 
   v3 origin;
   if (w->defocus_angle <= 0)
     origin = w->center;
   else
     origin = world_calculate_defocus_disk_sample(w);
+
+  v3 dir = v3s(pixel_sample, origin);
 
   return (ray){.origin = origin, .direction = dir};
 }

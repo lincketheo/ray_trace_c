@@ -13,6 +13,14 @@
 int main() {
   obj_collection objs = objc_create();
 
+  material ground = (material) {
+    .t = LAMB,
+    .l = (lambertian) {
+      .albedo = v3c(0.5, 0.5, 0.5)
+    }
+  };
+  objc_add_sphere(&objs, sc(0, -1000, 0, 1000, ground));
+
   for (int a = -11; a < 11; ++a) {
     for (int b = -11; b < 11; ++b) {
       double choose_mat = randd();
@@ -52,9 +60,9 @@ int main() {
 
   world w = world_create_default();
   w.ar = 16.0 / 9.0;
-  w.pxw = 1200;
-  w.samples_per_pixel = 500;
-  w.max_depth = 50;
+  w.pxw = 2000;
+  w.samples_per_pixel = 750;
+  w.max_depth = 100;
 
   w.vfov = 20;
   w.lookfrom = v3c(13, 2, 3);
