@@ -98,7 +98,7 @@ static v3 ray_color(const ray* r, const obj_collection* objs, int max_depth)
   return v3a(v3sm(v3c(1, 1, 1), 1.0 - a), v3sm((v3)v3c(0.5, 0.7, 1.0), a));
 }
 
-void camera_render_ppm(camera* w, obj_collection* objs)
+void camera_render_ppm(camera* w, const obj_collection* objs)
 {
   assert(w);
   assert(objs);

@@ -34,4 +34,4 @@ typedef struct {
 camera camera_create_default();
 
 // Render a camera and print to stdout in ppm format
-void camera_render_ppm(camera *w, obj_collection *objs);
+void camera_render_ppm(camera* w, const obj_collection* objs);

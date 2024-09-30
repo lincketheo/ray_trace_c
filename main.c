@@ -3,6 +3,7 @@
 #include "sphere.h"
 #include "vec3.h"
 
+/**
 int main()
 {
   obj_collection objs = objc_create();
@@ -62,7 +63,7 @@ int main()
 
   return 0;
 }
-/**
+*/
 int main()
 {
   camera w = camera_create_default();
@@ -97,7 +98,6 @@ int main()
 
   return 0;
 }
-*/
 
 /**
 int main() {
